@@ -1,4 +1,4 @@
-const { src, dest} = require('gulp');
+const { src, dest, watch} = require('gulp');
 
 const sass   = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
@@ -23,7 +23,9 @@ function html() {
     return src('src/index.html')
         .pipe(dest('build'))
 }
-
+function watching() {
+    watch(['src/scss/style.scss'])
+} 
 
 exports.html = html;
 exports.style = style;

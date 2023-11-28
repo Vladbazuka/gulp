@@ -1,1 +1,2 @@
-let one = 1;
+const box = document. querySelector('box');
+const btm = document. querySelector('.button');
