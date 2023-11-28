@@ -1,4 +1,4 @@
-const { src, dest, watch} = require('gulp');
+const { src, dest, watch, parallel} = require('gulp');
 
 const sass   = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
@@ -24,9 +24,13 @@ function html() {
         .pipe(dest('build'))
 }
 function watching() {
-    watch(['src/scss/style.scss'])
+    watch(['src/style/style.scss'], style)
+    watch(['src/js/main.js'], scripts)
 } 
 
 exports.html = html;
 exports.style = style;
 exports.scripts = scripts;
+exports.watching = watching;
+
+exports.default =  parallel(html,style,scripts,watching);
