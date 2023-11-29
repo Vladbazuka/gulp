@@ -1,19 +1,20 @@
-const browserSync = require('browser-sync');
 const { src, dest, watch, parallel} = require('gulp');
 
 const sass   = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify-es').default;
 const browserSync = require('browser-sync').create();
-const autoprefixer = require('gulp-autoprefixer').create();
+const autoprefixer = require('gulp-autoprefixer');
 
 
 function scripts() {
-    return src('src/js/main.js')
-    .pipe(concat('main.min.js'))
-    .pipe(uglify())
-    .pipe(dest('build/js'))
-    .pipe(browserSync.stream())
+    return src(['src/js/main.js',
+    'node_modules/swiper/swiper-bundle.js',
+])
+        .pipe(concat('main.min.js'))
+        .pipe(uglify())
+        .pipe(dest('build/js'))
+        .pipe(browserSync.stream())
 }
 
 function style () {
@@ -30,23 +31,19 @@ function html() {
         .pipe(dest('build'))
 }
 function watching() {
-    watch(['src/style/style.scss'], style)
-    watch(['src/js/main.js'], scripts)
-    watch(['src/*html']).on('change', browserSync.reload);
-} 
-
-function browsersync(){
     browserSync.init({
         server: {
             baseDir: "src/"
         }
     });
-}
+    watch(['src/style/style.scss'], style)
+    watch(['src/js/main.js'], scripts)
+    watch(['src/*html']).on('change', browserSync.reload);
+} 
 
 exports.html = html;
 exports.style = style;
 exports.scripts = scripts;
 exports.watching = watching;
-exports.browsersync = browsersync;
 
-exports.default =  parallel(html, style, scripts, browserSync, watching);
+exports.default =  parallel(html, style, scripts, watching);
