@@ -5,6 +5,7 @@ const sass   = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify-es').default;
 const browserSync = require('browser-sync').create();
+const autoprefixer = require('gulp-autoprefixer').create();
 
 
 function scripts() {
@@ -17,6 +18,7 @@ function scripts() {
 
 function style () {
     return src('src/style/style.scss')
+        .pipe (autoprefixer({overrideBrowserslist:['last 10 version']}))
         .pipe(concat('style.min.css'))
         .pipe(sass({outputStyle: 'compressed'}))
         .pipe(dest('build/style'))
@@ -47,4 +49,4 @@ exports.scripts = scripts;
 exports.watching = watching;
 exports.browsersync = browsersync;
 
-exports.default =  parallel(html,style,scripts,watching);
+exports.default =  parallel(html, style, scripts, browserSync, watching);
