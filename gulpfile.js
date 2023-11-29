@@ -41,9 +41,18 @@ function watching() {
     watch(['src/*html']).on('change', browserSync.reload);
 } 
 
+function build(){
+    return src([
+        'build/style/style.min.css',
+        'build/js/main.min.js',
+        'src/**/*.html'
+    ], {base : 'src'})
+    .pipe(dest('dist'))
+    }
 exports.html = html;
 exports.style = style;
 exports.scripts = scripts;
 exports.watching = watching;
+exports.build = build;
 
 exports.default =  parallel(html, style, scripts, watching);
