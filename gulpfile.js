@@ -5,12 +5,31 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify-es').default;
 const browserSync = require('browser-sync').create();
 const autoprefixer = require('gulp-autoprefixer');
+const avif = require('gulp-avif');
+const webp = require('gulp-webp');
+const imagemin = require('gulp-imagemin');
+const newer = require('gulp-newer');
+
+function images(){
+    return src (['src/images/*.*','!src/images/*.svg'])
+    .pipe (newer('build/images'))
+        .pipe(avif({
+            quality : 50
+        }))
+        .pipe(src('src/images/*.**'))
+        .pipe (newer('build/images'))
+        .pipe(webp())
+        .pipe(src('src/images/*.**'))
+        .pipe (newer('build/images'))
+        .pipe(imagemin())
+        .pipe(dest('build/images'))
+}
 
 
 function scripts() {
     return src(['src/js/main.js',
     'node_modules/swiper/swiper-bundle.js',
-])
+    ])
         .pipe(concat('main.min.js'))
         .pipe(uglify())
         .pipe(dest('build/js'))
@@ -30,6 +49,7 @@ function html() {
     return src('src/index.html')
         .pipe(dest('build'))
 }
+
 function watching() {
     browserSync.init({
         server: {
@@ -48,11 +68,13 @@ function build(){
         'src/**/*.html'
     ], {base : 'src'})
     .pipe(dest('dist'))
-    }
+}
+
+exports.images = images;    
 exports.html = html;
 exports.style = style;
 exports.scripts = scripts;
 exports.watching = watching;
 exports.build = build;
 
-exports.default =  parallel(html, style, scripts, watching);
+exports.default =  parallel(html, images, style, scripts, watching);
