@@ -9,6 +9,16 @@ const avif = require('gulp-avif');
 const webp = require('gulp-webp');
 const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
+const include = require('gulp-include');
+
+function include() {
+    return src('src/*.html')
+        .pipe(include({
+            includePaths: 'src/pages'
+        }))
+        .pipe(dest('build'))
+        .pipe(browserSync.stream())
+}
 
 function images(){
     return src (['src/images/*.*','!src/images/*.svg'])
@@ -53,7 +63,7 @@ function html() {
 function watching() {
     browserSync.init({
         server: {
-            baseDir: "src/"
+            baseDir: "build/"
         }
     });
     watch(['src/style/style.scss'], style)
