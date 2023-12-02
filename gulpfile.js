@@ -11,7 +11,7 @@ const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
 const include = require('gulp-include');
 
-function include() {
+function pages() {
     return src('src/*.html')
         .pipe(include({
             includePaths: 'src/pages'
@@ -66,9 +66,10 @@ function watching() {
             baseDir: "build/"
         }
     });
-    watch(['src/style/style.scss'], style)
-    watch(['src/js/main.js'], scripts)
-    watch(['src/*html']).on('change', browserSync.reload);
+    watch(['src/style/style.scss'], style);
+    watch(['src/js/main.js'], scripts);
+    watch(['src/pages/*', 'src/*.html'], pages);
+    watch(['src/*.html']).on('change', browserSync.reload);
 } 
 
 function build(){
@@ -86,5 +87,6 @@ exports.style = style;
 exports.scripts = scripts;
 exports.watching = watching;
 exports.build = build;
+exports.pages = pages;
 
-exports.default =  parallel(html, images, style, scripts, watching);
+exports.default =  parallel(html, images, style, scripts, pages, watching);
