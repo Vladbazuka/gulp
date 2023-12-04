@@ -36,6 +36,11 @@ function images(){
         .pipe(dest('build/images'))
 }
 
+function fonts () {
+    return src('src/fonts/*.*')
+        .pipe(dest('build/fonts'))
+}
+
 
 function scripts() {
     return src(['src/js/main.js',
@@ -71,6 +76,7 @@ function watching() {
     watch(['src/style/*.scss'], style);
     watch(['src/js/main.js'], scripts);
     watch(['src/pages/*', 'src/*.html'], pages);
+    watch(['src/fonts/*.*'], fonts);
     watch(['src/*.html']).on('change', browserSync.reload);
 } 
 
@@ -90,5 +96,6 @@ exports.scripts = scripts;
 exports.watching = watching;
 exports.build = build;
 exports.pages = pages;
+exports.fonts = fonts;
 
-exports.default =  parallel(html, images, style, scripts, pages, watching);
+exports.default =  parallel(html, fonts, images, style, scripts, pages, watching);

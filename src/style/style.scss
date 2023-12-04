@@ -1,13 +1,6 @@
 @import 'color.scss';
+@import 'fonts.scss';
 
 @import '../../node_modules/swiper/swiper-bundle';
 
 @import 'header.scss';
-
-body {
-    color: red;
-    background: beige;
-}
-p {
-    color: aqua;
-}
