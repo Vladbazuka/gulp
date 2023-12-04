@@ -10,6 +10,7 @@ const webp = require('gulp-webp');
 const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
 const include = require('gulp-include');
+const plumber = require('gulp-plumber');
 
 function pages() {
     return src('src/*.html')
@@ -47,7 +48,8 @@ function scripts() {
 }
 
 function style () {
-    return src('src/style/style.scss')
+    return src('src/style/*.scss')
+        .pipe(plumber())
         .pipe (autoprefixer({overrideBrowserslist:['last 10 version']}))
         .pipe(concat('style.min.css'))
         .pipe(sass({outputStyle: 'compressed'}))
@@ -66,7 +68,7 @@ function watching() {
             baseDir: "build/"
         }
     });
-    watch(['src/style/style.scss'], style);
+    watch(['src/style/*.scss'], style);
     watch(['src/js/main.js'], scripts);
     watch(['src/pages/*', 'src/*.html'], pages);
     watch(['src/*.html']).on('change', browserSync.reload);
